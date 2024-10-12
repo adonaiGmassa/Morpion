@@ -64,3 +64,26 @@ def DESSINER_PLATEAU():
                     # Dessine un cercle pour le "O"
                     pygame.draw.circle(fenetre, NOIR, (j * LARGEUR_CASE + 50, i * LARGEUR_CASE + 50),40,2)  
 
+# Vérifier la victoire
+def victoire():
+    # Parcourt les lignes du plateau
+    for i in range(3):
+        # Vérifie si les trois cases de la ligne i sont identiques et non vides
+        if plateau[i][0] == plateau[i][1] == plateau[i][2] != " ":
+            return plateau[i][0]# Si oui, retourne le symbole (X ou O) qui a gagné
+
+        # Vérifie si les trois cases de la colonne i sont identiques et non vides
+        if plateau[0][i] == plateau[1][i] == plateau[2][i] != " ":
+            return plateau[0][i]# Si oui, retourne le symbole (X ou O) qui a gagné
+
+   
+    # Vérifie si les trois cases de la diagonale principale sont identiques et non vides
+    if plateau[0][0] == plateau[1][1] == plateau[2][2] != " ":
+        return plateau[0][0]# Si oui, retourne le symbole (X ou O) qui a gagné
+
+    # Vérifie si les trois cases de la diagonale secondaire sont identiques et non vides
+    if plateau[0][2] == plateau[1][1] == plateau[2][0] != " ":
+        return plateau[0][2]# Si oui, retourne le symbole (X ou O) qui a gagné
+
+    # Si aucune victoire n'est trouvée, retourne None
+    return None
