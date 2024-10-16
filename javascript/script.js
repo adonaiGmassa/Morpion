@@ -11,21 +11,64 @@ let etatDuJeu = ["", "", "", "", "", "", "", "", ""];
 function creerPlateau() {
     // Boucle pour créer 9 cellules (3x3) pour le jeu
     for (let i = 0; i < 9; i++) {
-        // Création d'un nouvel élément div pour chaque cellule
         const CELLULE = document.createElement("div");
-        
-        // Ajout de la classe "cellule" à chaque div pour le style
         CELLULE.classList.add("cellule");
-        
-        // Définition de l'attribut "data-index" pour identifier chaque cellule
         CELLULE.setAttribute("data-index", i);
-        
-        // Ajout d'un écouteur d'événements pour gérer le clic sur la cellule
         CELLULE.addEventListener("click", gererClic);
-        
-        // Ajout de la cellule au plateau
         PLATEAU.appendChild(CELLULE);
     }
 }
 
+// Fonction pour gérer le clic sur une cellule
+function gererClic(event) {
+    const INDEX= event.target.getAttribute("data-index");
+
+    // Vérifier si la cellule est déjà remplie ou si le jeu est terminé
+    if (etatDuJeu[INDEX] !== "" || verifierVictoire()) {
+        return;
+    }
+
+    // Mettre à jour l'état du jeu
+    etatDuJeu[INDEX] = joueurActuel;
+    event.target.textContent = joueurActuel;
+
+    // Vérifier la victoire
+    if (verifierVictoire()) {
+        setTimeout(() => alert(`Le joueur ${joueurActuel} a gagné!`), 10);
+    } else {
+        // Changer de joueur
+        joueurActuel = joueurActuel === "X" ? "O" : "X";
+    }
+}
+
+// Fonction pour vérifier la victoire
+function verifierVictoire() {
+    const COMBISNAISON_GAGNANTE = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    return combinaisonsGagnantes.some(combinaison => {
+        const [a, b, c] = combinaison;
+        return etatDuJeu[a] && etatDuJeu[a] === etatDuJeu[b] && etatDuJeu[a] === etatDuJeu[c];
+    });
+}
+
+// Fonction pour réinitialiser le jeu
+function Réinitialiser() {
+    etatDuJeu = ["", "", "", "", "", "", "", "", ""];
+    joueurActuel = "X";
+    const CELLULES = PLATEAU.children;
+    for (let cellule of CELLULES) {
+        cellule.textContent = "";
+    }
+}
+
+// Initialiser le plateau
 creerPlateau();
