@@ -21,7 +21,7 @@ function creerPlateau() {
 
 // Fonction pour gérer le clic sur une cellule
 function gererClic(event) {
-    const INDEX= event.target.getAttribute("data-index");
+    const INDEX = event.target.getAttribute("data-index");
 
     // Vérifier si la cellule est déjà remplie ou si le jeu est terminé
     if (etatDuJeu[INDEX] !== "" || verifierVictoire()) {
@@ -34,7 +34,7 @@ function gererClic(event) {
 
     // Vérifier la victoire
     if (verifierVictoire()) {
-        setTimeout(() => alert(`Le joueur ${joueurActuel} a gagné!`), 10);
+        setTimeout(() =>  afficherMessageVictoire(), 10);
     } else {
         // Changer de joueur
         joueurActuel = joueurActuel === "X" ? "O" : "X";
@@ -43,7 +43,7 @@ function gererClic(event) {
 
 // Fonction pour vérifier la victoire
 function verifierVictoire() {
-    const COMBISNAISON_GAGNANTE = [
+    const COMBINAISON_GAGNANTES = [
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8],
@@ -54,20 +54,29 @@ function verifierVictoire() {
         [2, 4, 6]
     ];
 
-    return combinaisonsGagnantes.some(combinaison => {
+    return COMBINAISON_GAGNANTES.some(combinaison => {
         const [a, b, c] = combinaison;
         return etatDuJeu[a] && etatDuJeu[a] === etatDuJeu[b] && etatDuJeu[a] === etatDuJeu[c];
     });
 }
 
 // Fonction pour réinitialiser le jeu
-function Réinitialiser() {
+function reinitialiser() {
     etatDuJeu = ["", "", "", "", "", "", "", "", ""];
     joueurActuel = "X";
     const CELLULES = PLATEAU.children;
     for (let cellule of CELLULES) {
         cellule.textContent = "";
     }
+}
+
+// Fonction pour afficher un message de victoire
+function afficherMessageVictoire() {
+    const  MESSAGE = `Le joueur ${joueurActuel} a gagné!`;
+    const MESSAGE_CONTAINER = document.createElement("div");
+    MESSAGE_CONTAINER.classList.add("message-victoire");
+    MESSAGE_CONTAINER.textContent = MESSAGE;
+    document.body.appendChild(MESSAGE_CONTAINER);
 }
 
 // Initialiser le plateau
