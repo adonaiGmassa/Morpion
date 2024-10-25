@@ -27,10 +27,8 @@ plateau = [
 
 # Fonction pour dessiner le plateau
 def DESSINER_PLATEAU():
-
-    fenetre.fill(BLANC)  # Remplit la fenêtre avec la couleur blanche en arrière-plan
-
-    for i in range(1, 3):# Dessine les lignes horizontales du plateau
+    fenetre.fill(BLANC)  # Mettre l'arrière-plan blanc
+    for i in range(1, 3):# Dessine les lignes du plateau 
         # Dessine une ligne horizontale
         pygame.draw.line(fenetre, NOIR, (0, i * LARGEUR_CASE), (LARGUR, i * LARGEUR_CASE), 2)
         # Dessine une ligne verticale
@@ -66,17 +64,20 @@ def DESSINER_PLATEAU():
 
 # Vérifier la victoire
 def victoire():
+
     # Parcourt les lignes du plateau
     for i in range(3):
+
         # Vérifie si les trois cases de la ligne i sont identiques et non vides
         if plateau[i][0] == plateau[i][1] == plateau[i][2] != " ":
-            return plateau[i][0]# Si oui, retourne le symbole (X ou O) qui a gagné
+            # Si oui, retourne le symbole (X ou O) qui a gagné
+            return plateau[i][0]
 
         # Vérifie si les trois cases de la colonne i sont identiques et non vides
         if plateau[0][i] == plateau[1][i] == plateau[2][i] != " ":
-            return plateau[0][i]# Si oui, retourne le symbole (X ou O) qui a gagné
+            # Si oui, retourne le symbole (X ou O) qui a gagné
+            return plateau[0][i]
 
-   
     # Vérifie si les trois cases de la diagonale principale sont identiques et non vides
     if plateau[0][0] == plateau[1][1] == plateau[2][2] != " ":
         return plateau[0][0]# Si oui, retourne le symbole (X ou O) qui a gagné
