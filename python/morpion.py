@@ -18,49 +18,28 @@ fenetre = pygame.display.set_mode((LARGUR, HAUTEUR))
 pygame.display.set_caption("Morpion")
 
 # Créer le plateau
-plateau = [
-    [" " 
-     for _ in range(3)
-    ] 
-    for _ in range(3)
-]
+plateau = [[" " for _ in range(3)] for _ in range(3)]
+tour = "X"  # Le joueur qui commence
+jeu_en_cours = True
 
 # Fonction pour dessiner le plateau
 def DESSINER_PLATEAU():
     fenetre.fill(BLANC)  # Mettre l'arrière-plan blanc
-    for i in range(1, 3):# Dessine les lignes du plateau 
+    for i in range(1, 3):  # Dessine les lignes du plateau 
         # Dessine une ligne horizontale
         pygame.draw.line(fenetre, NOIR, (0, i * LARGEUR_CASE), (LARGUR, i * LARGEUR_CASE), 2)
         # Dessine une ligne verticale
         pygame.draw.line(fenetre, NOIR, (i * LARGEUR_CASE, 0), (i * LARGEUR_CASE, HAUTEUR), 2)
-        
-        # Parcourt chaque ligne du plateau
-        for i in range(3):
-    
-            # Parcourt chaque colonne du plateau
-            for j in range(3):
 
-                # Vérifie si la case contient un "X"
-                if plateau[i][j] == "X":
-
-                    # Dessine la première diagonale du "X"
-                    pygame.draw.line(
-                        fenetre, ROUGE,
-                        (j * LARGEUR_CASE + 20, i * LARGEUR_CASE + 20),
-                        (j * LARGEUR_CASE + 80, i * LARGEUR_CASE + 80), 2
-                        )  
-
-                    # Dessine la deuxième diagonale du "X"
-                    pygame.draw.line(
-                        fenetre, ROUGE,
-                        (j * LARGEUR_CASE + 80, i * LARGEUR_CASE + 20),
-                        (j * LARGEUR_CASE + 20, i * LARGEUR_CASE + 80),2
-                        ) 
-                
-                # Vérifie si la case contient un "O"
-                elif plateau[i][j] == "O":
-                    # Dessine un cercle pour le "O"
-                    pygame.draw.circle(fenetre, NOIR, (j * LARGEUR_CASE + 50, i * LARGEUR_CASE + 50),40,2)  
+    for i in range(3):
+        for j in range(3):
+            if plateau[i][j] == "X":
+                pygame.draw.line(fenetre, ROUGE, (j * LARGEUR_CASE + 20, i * LARGEUR_CASE + 20),
+                                 (j * LARGEUR_CASE + 80, i * LARGEUR_CASE + 80), 2)
+                pygame.draw.line(fenetre, ROUGE, (j * LARGEUR_CASE + 80, i * LARGEUR_CASE + 20),
+                                 (j * LARGEUR_CASE + 20, i * LARGEUR_CASE + 80), 2)
+            elif plateau[i][j] == "O":
+                pygame.draw.circle(fenetre, NOIR, (j * LARGEUR_CASE + 50, i * LARGEUR_CASE + 50), 40, 2)
 
 # Vérifier la victoire
 def victoire():
@@ -70,21 +49,45 @@ def victoire():
 
         # Vérifie si les trois cases de la ligne i sont identiques et non vides
         if plateau[i][0] == plateau[i][1] == plateau[i][2] != " ":
-            # Si oui, retourne le symbole (X ou O) qui a gagné
+
             return plateau[i][0]
 
         # Vérifie si les trois cases de la colonne i sont identiques et non vides
         if plateau[0][i] == plateau[1][i] == plateau[2][i] != " ":
-            # Si oui, retourne le symbole (X ou O) qui a gagné
             return plateau[0][i]
-
     # Vérifie si les trois cases de la diagonale principale sont identiques et non vides
     if plateau[0][0] == plateau[1][1] == plateau[2][2] != " ":
-        return plateau[0][0]# Si oui, retourne le symbole (X ou O) qui a gagné
+        return plateau[0][0]
 
-    # Vérifie si les trois cases de la diagonale secondaire sont identiques et non vides
     if plateau[0][2] == plateau[1][1] == plateau[2][0] != " ":
-        return plateau[0][2]# Si oui, retourne le symbole (X ou O) qui a gagné
+        return plateau[0][2]
 
     # Si aucune victoire n'est trouvée, retourne None
     return None
+
+# Boucle principale du jeu
+while jeu_en_cours:
+    DESSINER_PLATEAU()
+    pygame.display.flip()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Clic gauche
+            x, y = event.pos
+            colonne = x // LARGEUR_CASE
+            ligne = y // LARGEUR_CASE
+
+            if plateau[ligne][colonne] == " ":
+                plateau[ligne][colonne] = tour
+                gagnant = victoire()
+                if gagnant:
+                    print(f"Le joueur {gagnant} a gagné !")
+                    jeu_en_cours = False  # Fin du jeu
+
+                # Changer de tour
+                tour = "O" if tour == "X" else "X"
+
+pygame.quit()
