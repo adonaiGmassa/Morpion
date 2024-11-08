@@ -122,6 +122,14 @@ while jeu_en_cours:
                 # Changer de tour
                 tour = "O" if tour == "X" else "X"
 
+            # Vérifier si le clic est dans la zone du bouton "Recommencer"
+            if 100 <= x <= 200 and 250 <= y <= 290:
+
+                plateau = reinitialiser_plateau()  # Réinitialiser le plateau
+                tour = "X"  # Le joueur X recommence
+                jeu_en_cours = True  # Relancer le jeu
+
+
 
 
 pygame.quit()
