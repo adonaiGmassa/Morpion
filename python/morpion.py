@@ -25,6 +25,10 @@ plateau = [[" " for _ in range(3)] for _ in range(3)]
 tour = "X"  # Le joueur qui commence
 jeu_en_cours = True
 
+# Fonction pour réinitialiser le plateau
+def reinitialiser_plateau():
+
+    return [[" " for _ in range(3)] for _ in range(3)]
 
 # Fonction pour dessiner le plateau
 def DESSINER_PLATEAU():
@@ -121,4 +125,3 @@ while jeu_en_cours:
 
 
 pygame.quit()
-
