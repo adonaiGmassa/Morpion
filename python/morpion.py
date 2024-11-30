@@ -29,9 +29,17 @@ def dessiner_bouton(x, y, largeur, hauteur, texte, couleur):
 
     pygame.draw.rect(fenetre, couleur, (x, y, largeur, hauteur))
     pygame.draw.rect(fenetre, NOIR, (x, y, largeur, hauteur), 2)
+    
+    # Créer la police et le texte
     font = pygame.font.Font(None, 36)
     label = font.render(texte, True, NOIR)
-    fenetre.blit(label, (x + 10, y + 10))
+    
+    # Calculer la position pour centrer le texte
+    text_rect = label.get_rect(center=(x + largeur // 2, y + hauteur // 2))
+    
+    # Afficher le texte centré
+    fenetre.blit(label, text_rect)
+
 
 # Fonction pour réinitialiser le plateau
 def reinitialiser_plateau():
